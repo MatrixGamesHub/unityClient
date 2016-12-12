@@ -5,7 +5,7 @@
  *  @generated
  */
 
-namespace MtxRendererService
+namespace RendererService
 {
   public enum GroundTexture
   {

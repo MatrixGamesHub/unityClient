@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 
 
-public class MtxRendererHandler : Actor, MtxRendererService.MtxRendererService.Iface {
+public class RendererHandler : Actor, RendererService.RendererService.Iface {
 
     public void Ping() {
     }
@@ -33,7 +33,7 @@ public class MtxRendererHandler : Actor, MtxRendererService.MtxRendererService.I
         return new List<sbyte> {0, 0};
     }
 
-    public void LoadLevel(List<List<List<List<short>>>> field, MtxRendererService.LevelInfo levelInfo) {
+    public void LoadLevel(List<List<List<List<short>>>> field, RendererService.LevelInfo levelInfo) {
         AddAct(new LoadLevelAct(field, levelInfo));
     }
 
@@ -61,11 +61,11 @@ public class MtxRendererHandler : Actor, MtxRendererService.MtxRendererService.I
         AddAct(new TriggerLeaveAct(objId, sourceId));
     }
 
-    public void Move(short objId, MtxRendererService.Direction direction, short fromX, short fromY, short toX, short toY) {
+    public void Move(short objId, RendererService.Direction direction, short fromX, short fromY, short toX, short toY) {
         AddAct(new MoveAct(objId, direction, fromX, fromY, toX, toY));
     }
 
-    public void Jump(short objId, MtxRendererService.Direction direction, short fromX, short fromY, short toX, short toY) {
+    public void Jump(short objId, RendererService.Direction direction, short fromX, short fromY, short toX, short toY) {
         AddAct(new JumpAct(objId, direction, fromX, fromY, toX, toY));
     }
 

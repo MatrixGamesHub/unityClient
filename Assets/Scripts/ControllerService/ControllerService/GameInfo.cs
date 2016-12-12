@@ -15,7 +15,7 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-namespace MtxControllerService
+namespace ControllerService
 {
 
   #if !SILVERLIGHT

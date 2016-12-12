@@ -687,7 +687,7 @@ GameObject:
   - 4: {fileID: 692374310}
   - 114: {fileID: 692374309}
   m_Layer: 0
-  m_Name: MtxRendererHandler
+  m_Name: RendererHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -885,7 +885,7 @@ GameObject:
   - 4: {fileID: 789608297}
   - 114: {fileID: 789608296}
   m_Layer: 0
-  m_Name: MtxRendererServer
+  m_Name: RendererServer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1117,7 +1117,7 @@ GameObject:
   - 4: {fileID: 1305683333}
   - 114: {fileID: 1305683332}
   m_Layer: 0
-  m_Name: MtxControllerClient
+  m_Name: ControllerClient
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1462,7 +1462,7 @@ Behaviour:
   m_Enabled: 1
 --- !u!20 &1977583443
 Camera:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1977583438}

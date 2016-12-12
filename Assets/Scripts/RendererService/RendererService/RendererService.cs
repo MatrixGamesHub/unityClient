@@ -15,9 +15,9 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-namespace MtxRendererService
+namespace RendererService
 {
-  public partial class MtxRendererService {
+  public partial class RendererService {
     public interface ISync {
       void Ping();
       void Shutdown();

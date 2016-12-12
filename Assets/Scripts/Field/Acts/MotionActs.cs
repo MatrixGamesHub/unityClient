@@ -11,13 +11,13 @@ public abstract class MotionAct : TemporalAct {
     protected Vector3 end = Vector3.zero;
 
     protected short objId = -1;
-    protected MtxRendererService.Direction direction = MtxRendererService.Direction.UP;
+    protected RendererService.Direction direction = RendererService.Direction.UP;
     protected short fromX = 0;
     protected short fromY = 0;
     protected short toX = 0;
     protected short toY = 0;
 
-    public MotionAct(short objId, MtxRendererService.Direction direction, short fromX, short fromY,
+    public MotionAct(short objId, RendererService.Direction direction, short fromX, short fromY,
                      short toX, short toY) {
         this.objId     = objId;
         this.direction = direction;
@@ -40,7 +40,7 @@ public abstract class MotionAct : TemporalAct {
 
 
 public class MoveAct : MotionAct {
-    public MoveAct(short objId, MtxRendererService.Direction direction, short fromX, short fromY,
+    public MoveAct(short objId, RendererService.Direction direction, short fromX, short fromY,
                    short toX, short toY) : base(objId, direction, fromX, fromY, toX, toY) {}
 }
 
@@ -55,7 +55,7 @@ public class JumpAct : MotionAct {
     }
 
 
-    public JumpAct(short objId, MtxRendererService.Direction direction, short fromX, short fromY,
+    public JumpAct(short objId, RendererService.Direction direction, short fromX, short fromY,
                    short toX, short toY) : base(objId, direction, fromX, fromY, toX, toY) {}
 
     public override void Perform(float step) {

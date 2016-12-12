@@ -7,23 +7,23 @@ using Thrift.Transport;
 using Thrift.Protocol;
 
 
-public class MtxRendererServer : Singleton<MtxRendererServer> {
+public class RendererServer : Singleton<RendererServer> {
 
     public int port;
-    public MtxRendererHandler handler;
+    public RendererHandler handler;
 
     private TServerTransport transport = null;
     private TServer server = null;
     private Thread serverThread = null;
 
     public void Run() {
-        var processor = new MtxRendererService.MtxRendererService.Processor(handler);
+        var processor = new RendererService.RendererService.Processor(handler);
 
         transport = new TServerSocket(port);
         server = new TThreadPoolServer(processor, transport);
 
         serverThread = new Thread(() => {
-            Debug.Log ("Starting MtxRenderer-Service...");
+            Debug.Log ("Starting Renderer-Service...");
             server.Serve();
             transport.Close();
         }) { IsBackground = true };
@@ -35,7 +35,7 @@ public class MtxRendererServer : Singleton<MtxRendererServer> {
         Thread clientThread = new Thread(() => {
             var transport = new TSocket("localhost", port);
             var protocol = new TBinaryProtocol(transport);
-            var client = new MtxRendererService.MtxRendererService.Client(protocol);
+            var client = new RendererService.RendererService.Client(protocol);
             transport.Open();
             client.Ping();
             transport.Close();
@@ -45,7 +45,7 @@ public class MtxRendererServer : Singleton<MtxRendererServer> {
     }
 
     public void Stop() {
-        Debug.Log ("MtxRenderer-Service shuts down...");
+        Debug.Log ("Renderer-Service shuts down...");
 
         server.Stop();
 /*      PingServer();

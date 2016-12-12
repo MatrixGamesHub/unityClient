@@ -29,11 +29,11 @@ public class Field : Singleton<Field> {
         root.transform.position = new Vector3(-(width - 1) / 2.0f, 0, (height - 1) / 2.0f);
     }
 
-    public void SetGroundTexture(MtxRendererService.GroundTexture texture) {
+    public void SetGroundTexture(RendererService.GroundTexture texture) {
         ground = objects.GetGround(texture);
     }
 
-    public void SetWallTexture(MtxRendererService.WallTexture texture) {
+    public void SetWallTexture(RendererService.WallTexture texture) {
         wall = objects.GetWall(texture);
     }
 

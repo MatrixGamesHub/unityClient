@@ -15,9 +15,9 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-namespace MtxControllerService
+namespace ControllerService
 {
-  public partial class MtxControllerService {
+  public partial class ControllerService {
     public interface ISync {
       void Ping();
       short ConnectRenderer(string host, int port);
@@ -27,6 +27,7 @@ namespace MtxControllerService
       List<string> GetGames();
       GameInfo GetGameInfo(string name);
       void LoadGame(string name);
+      void ReloadGame();
       void ResetLevel();
     }
 
@@ -62,6 +63,10 @@ namespace MtxControllerService
       #if SILVERLIGHT
       IAsyncResult Begin_LoadGame(AsyncCallback callback, object state, string name);
       void End_LoadGame(IAsyncResult asyncResult);
+      #endif
+      #if SILVERLIGHT
+      IAsyncResult Begin_ReloadGame(AsyncCallback callback, object state);
+      void End_ReloadGame(IAsyncResult asyncResult);
       #endif
       #if SILVERLIGHT
       IAsyncResult Begin_ResetLevel(AsyncCallback callback, object state);
@@ -621,6 +626,64 @@ namespace MtxControllerService
 
       
       #if SILVERLIGHT
+      public IAsyncResult Begin_ReloadGame(AsyncCallback callback, object state)
+      {
+        return send_ReloadGame(callback, state);
+      }
+
+      public void End_ReloadGame(IAsyncResult asyncResult)
+      {
+        oprot_.Transport.EndFlush(asyncResult);
+        recv_ReloadGame();
+      }
+
+      #endif
+
+      public void ReloadGame()
+      {
+        #if !SILVERLIGHT
+        send_ReloadGame();
+        recv_ReloadGame();
+
+        #else
+        var asyncResult = Begin_ReloadGame(null, null);
+        End_ReloadGame(asyncResult);
+
+        #endif
+      }
+      #if SILVERLIGHT
+      public IAsyncResult send_ReloadGame(AsyncCallback callback, object state)
+      #else
+      public void send_ReloadGame()
+      #endif
+      {
+        oprot_.WriteMessageBegin(new TMessage("ReloadGame", TMessageType.Call, seqid_));
+        ReloadGame_args args = new ReloadGame_args();
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        #if SILVERLIGHT
+        return oprot_.Transport.BeginFlush(callback, state);
+        #else
+        oprot_.Transport.Flush();
+        #endif
+      }
+
+      public void recv_ReloadGame()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        ReloadGame_result result = new ReloadGame_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        return;
+      }
+
+      
+      #if SILVERLIGHT
       public IAsyncResult Begin_ResetLevel(AsyncCallback callback, object state)
       {
         return send_ResetLevel(callback, state);
@@ -690,6 +753,7 @@ namespace MtxControllerService
         processMap_["GetGames"] = GetGames_Process;
         processMap_["GetGameInfo"] = GetGameInfo_Process;
         processMap_["LoadGame"] = LoadGame_Process;
+        processMap_["ReloadGame"] = ReloadGame_Process;
         processMap_["ResetLevel"] = ResetLevel_Process;
       }
 
@@ -969,6 +1033,34 @@ namespace MtxControllerService
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
           oprot.WriteMessageBegin(new TMessage("LoadGame", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void ReloadGame_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        ReloadGame_args args = new ReloadGame_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        ReloadGame_result result = new ReloadGame_result();
+        try
+        {
+          iface_.ReloadGame();
+          oprot.WriteMessageBegin(new TMessage("ReloadGame", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("ReloadGame", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -2736,6 +2828,131 @@ namespace MtxControllerService
           __sb.Append("GameError: ");
           __sb.Append(GameError== null ? "<null>" : GameError.ToString());
         }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class ReloadGame_args : TBase
+    {
+
+      public ReloadGame_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ReloadGame_args");
+          oprot.WriteStructBegin(struc);
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ReloadGame_args(");
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class ReloadGame_result : TBase
+    {
+
+      public ReloadGame_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ReloadGame_result");
+          oprot.WriteStructBegin(struc);
+
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ReloadGame_result(");
         __sb.Append(")");
         return __sb.ToString();
       }

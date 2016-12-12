@@ -32,10 +32,10 @@ public class LevelAct : AtomicAct {
 
 public class LoadLevelAct : LevelAct {
 
-    private MtxRendererService.LevelInfo levelInfo;
+    private RendererService.LevelInfo levelInfo;
 
     public LoadLevelAct(List<List<List<List<short>>>> field,
-                        MtxRendererService.LevelInfo levelInfo) : base(field) {
+                        RendererService.LevelInfo levelInfo) : base(field) {
         this.levelInfo = levelInfo;
     }
 

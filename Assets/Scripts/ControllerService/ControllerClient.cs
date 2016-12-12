@@ -9,12 +9,12 @@ using Thrift.Server;
 using Thrift.Transport;
 
 
-public class MtxControllerClient : Singleton<MtxControllerClient> {
+public class ControllerClient : Singleton<ControllerClient> {
     public int port;
 
     private TTransport transport = null;
     private TProtocol protocol = null;
-    private MtxControllerService.MtxControllerService.Client client = null;
+    private ControllerService.ControllerService.Client client = null;
     private short rendererId = -1;
 
     private bool connected=false;
@@ -41,7 +41,7 @@ public class MtxControllerClient : Singleton<MtxControllerClient> {
         if (connected) {
             try {
                 return func();
-            } catch(MtxControllerService.GameError e) {
+            } catch(ControllerService.GameError e) {
                 Debug.LogError(e);
             } catch(SocketException) {
                 Abort();
@@ -58,12 +58,12 @@ public class MtxControllerClient : Singleton<MtxControllerClient> {
         try {
             transport = new TSocket("localhost", port);
             protocol = new TBinaryProtocol(transport);
-            client = new MtxControllerService.MtxControllerService.Client(protocol);
+            client = new ControllerService.ControllerService.Client(protocol);
 
             transport.Open();
 
             connected = true;
-            rendererId = CallClientCommand<short>(() => client.ConnectRenderer("localhost", MtxRendererServer.Instance.port));
+            rendererId = CallClientCommand<short>(() => client.ConnectRenderer("localhost", RendererServer.Instance.port));
 
             LoadGame("Sokoban");
 
@@ -80,19 +80,23 @@ public class MtxControllerClient : Singleton<MtxControllerClient> {
         return CallClientCommand<List<string>>(() => client.GetGames());
     }
 
-    public MtxControllerService.GameInfo GetGameInfo(string name) {
-        return CallClientCommand<MtxControllerService.GameInfo>(() => client.GetGameInfo(name));
+    public ControllerService.GameInfo GetGameInfo(string name) {
+        return CallClientCommand<ControllerService.GameInfo>(() => client.GetGameInfo(name));
     }
 
     public void LoadGame(string name) {
         CallClientCommand(() => client.LoadGame(name));
     }
 
-    public void MovePlayer(sbyte number, MtxControllerService.Direction direction) {
+    public void ReloadGame() {
+        CallClientCommand(() => client.ReloadGame());
+    }
+
+    public void MovePlayer(sbyte number, ControllerService.Direction direction) {
         CallClientCommand(() => client.MovePlayer(number, direction));
     }
 
-    public void JumpPlayer(sbyte number, MtxControllerService.Direction direction) {
+    public void JumpPlayer(sbyte number, ControllerService.Direction direction) {
         CallClientCommand(() => client.JumpPlayer(number, direction));
     }
 

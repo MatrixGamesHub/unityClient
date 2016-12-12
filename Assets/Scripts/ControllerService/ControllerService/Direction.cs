@@ -5,7 +5,7 @@
  *  @generated
  */
 
-namespace MtxRendererService
+namespace ControllerService
 {
   public enum Direction
   {

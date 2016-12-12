@@ -24,26 +24,26 @@ public class Objects : MonoBehaviour {
     public GameObject tilePrefab      = null;
     public GameObject pacDotPrefab    = null;
 
-    private Dictionary<MtxRendererService.GroundTexture, GameObject> groundMap = new Dictionary<MtxRendererService.GroundTexture, GameObject>();
-    private Dictionary<MtxRendererService.WallTexture, GameObject> wallMap = new Dictionary<MtxRendererService.WallTexture, GameObject>();
+    private Dictionary<RendererService.GroundTexture, GameObject> groundMap = new Dictionary<RendererService.GroundTexture, GameObject>();
+    private Dictionary<RendererService.WallTexture, GameObject> wallMap = new Dictionary<RendererService.WallTexture, GameObject>();
 
     // Use this for initialization
     void Awake() {
-        groundMap[MtxRendererService.GroundTexture.GRAS]     = groundGras;
-        groundMap[MtxRendererService.GroundTexture.WOOD]     = groundWood;
-        groundMap[MtxRendererService.GroundTexture.ROCK]     = groundRock;
-        groundMap[MtxRendererService.GroundTexture.SAND]     = groundSand;
-        groundMap[MtxRendererService.GroundTexture.LAVA]     = groundLava;
-        groundMap[MtxRendererService.GroundTexture.SNOW]     = groundSnow;
-        groundMap[MtxRendererService.GroundTexture.ICE]      = groundIce;
-        groundMap[MtxRendererService.GroundTexture.EARTH]    = groundEarth;
-        groundMap[MtxRendererService.GroundTexture.METAL]    = groundMetal;
-        groundMap[MtxRendererService.GroundTexture.MARBLE]   = groundMarble;
-        groundMap[MtxRendererService.GroundTexture.PAVEMENT] = groundPavement;
-        groundMap[MtxRendererService.GroundTexture.CONCRETE] = groundConcrete;
+        groundMap[RendererService.GroundTexture.GRAS]     = groundGras;
+        groundMap[RendererService.GroundTexture.WOOD]     = groundWood;
+        groundMap[RendererService.GroundTexture.ROCK]     = groundRock;
+        groundMap[RendererService.GroundTexture.SAND]     = groundSand;
+        groundMap[RendererService.GroundTexture.LAVA]     = groundLava;
+        groundMap[RendererService.GroundTexture.SNOW]     = groundSnow;
+        groundMap[RendererService.GroundTexture.ICE]      = groundIce;
+        groundMap[RendererService.GroundTexture.EARTH]    = groundEarth;
+        groundMap[RendererService.GroundTexture.METAL]    = groundMetal;
+        groundMap[RendererService.GroundTexture.MARBLE]   = groundMarble;
+        groundMap[RendererService.GroundTexture.PAVEMENT] = groundPavement;
+        groundMap[RendererService.GroundTexture.CONCRETE] = groundConcrete;
 
-        wallMap[MtxRendererService.WallTexture.WHITE_BRICKS] = wallWhiteBricks;
-        wallMap[MtxRendererService.WallTexture.RED_BRICKS]   = wallRedBricks;
+        wallMap[RendererService.WallTexture.WHITE_BRICKS] = wallWhiteBricks;
+        wallMap[RendererService.WallTexture.RED_BRICKS]   = wallRedBricks;
     }
 
     // Update is called once per frame
@@ -51,15 +51,15 @@ public class Objects : MonoBehaviour {
 
     }
 
-    public GameObject GetGround(MtxRendererService.GroundTexture texture) {
-        if(texture == MtxRendererService.GroundTexture.NONE) {
+    public GameObject GetGround(RendererService.GroundTexture texture) {
+        if(texture == RendererService.GroundTexture.NONE) {
             return null;
         }
         return groundMap[texture];
 
     }
 
-    public GameObject GetWall(MtxRendererService.WallTexture texture) {
+    public GameObject GetWall(RendererService.WallTexture texture) {
         return wallMap[texture];
     }
 }

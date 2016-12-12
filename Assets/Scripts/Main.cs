@@ -18,13 +18,13 @@ public class Main : Singleton<Main> {
     private bool finished = false;
     private object finishedLock = new object();
 
-    private MtxControllerClient ctrlClient = null;
-    private MtxRendererServer renderServer = null;
+    private ControllerClient ctrlClient = null;
+    private RendererServer renderServer = null;
 
     private void Awake() {
         Application.runInBackground = true;
-        renderServer = MtxRendererServer.Instance;
-        ctrlClient = MtxControllerClient.Instance;
+        renderServer = RendererServer.Instance;
+        ctrlClient = ControllerClient.Instance;
     }
 
     private void Start() {
@@ -54,23 +54,25 @@ public class Main : Singleton<Main> {
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.UpArrow)) {
-            ctrlClient.MovePlayer(1, MtxControllerService.Direction.UP);
+            ctrlClient.MovePlayer(1, ControllerService.Direction.UP);
         } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            ctrlClient.MovePlayer(1, MtxControllerService.Direction.RIGHT);
+            ctrlClient.MovePlayer(1, ControllerService.Direction.RIGHT);
         } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-            ctrlClient.MovePlayer(1, MtxControllerService.Direction.DOWN);
+            ctrlClient.MovePlayer(1, ControllerService.Direction.DOWN);
         } else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            ctrlClient.MovePlayer(1, MtxControllerService.Direction.LEFT);
+            ctrlClient.MovePlayer(1, ControllerService.Direction.LEFT);
         } else if (Input.GetKeyDown(KeyCode.W)) {
-            ctrlClient.JumpPlayer(1, MtxControllerService.Direction.UP);
+            ctrlClient.JumpPlayer(1, ControllerService.Direction.UP);
         } else if (Input.GetKeyDown(KeyCode.D)) {
-            ctrlClient.JumpPlayer(1, MtxControllerService.Direction.RIGHT);
+            ctrlClient.JumpPlayer(1, ControllerService.Direction.RIGHT);
         } else if (Input.GetKeyDown(KeyCode.S)) {
-            ctrlClient.JumpPlayer(1, MtxControllerService.Direction.DOWN);
+            ctrlClient.JumpPlayer(1, ControllerService.Direction.DOWN);
         } else if (Input.GetKeyDown(KeyCode.A)) {
-            ctrlClient.JumpPlayer(1, MtxControllerService.Direction.LEFT);
+            ctrlClient.JumpPlayer(1, ControllerService.Direction.LEFT);
         } else if (Input.GetKeyDown(KeyCode.R)) {
             ctrlClient.ResetLevel();
+        } else if (Input.GetKeyDown(KeyCode.F5)) {
+            ctrlClient.ReloadGame();
         }
 
 
