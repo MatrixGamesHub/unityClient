@@ -74,6 +74,8 @@ public class ControllerClient : Singleton<ControllerClient> {
 
     public void Disconnect() {
         CallClientCommand(() => client.DisconnectRenderer(rendererId));
+        transport.Close();
+        connected = false;
     }
 
     public List<string> GetGames() {

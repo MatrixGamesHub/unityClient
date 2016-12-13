@@ -23,6 +23,8 @@ public class Objects : MonoBehaviour {
     public GameObject targetPrefab    = null;
     public GameObject tilePrefab      = null;
     public GameObject pacDotPrefab    = null;
+    public GameObject exitPrefab      = null;
+    public GameObject keyPrefab       = null;
 
     private Dictionary<RendererService.GroundTexture, GameObject> groundMap = new Dictionary<RendererService.GroundTexture, GameObject>();
     private Dictionary<RendererService.WallTexture, GameObject> wallMap = new Dictionary<RendererService.WallTexture, GameObject>();

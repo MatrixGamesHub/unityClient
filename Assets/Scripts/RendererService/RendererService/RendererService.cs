@@ -29,6 +29,7 @@ namespace RendererService
       List<sbyte> GetPreferedFieldSize();
       void LoadLevel(List<List<List<List<short>>>> field, LevelInfo levelInfo);
       void ResetLevel(List<List<List<List<short>>>> field);
+      void UpdateObject(short objectId, string key, @Value @value);
       void Spawn(short objId, sbyte symbol, short positionX, short positionY);
       void @Remove(short objectId, short sourceId);
       void Collect(short objectId, short sourceId);
@@ -78,6 +79,10 @@ namespace RendererService
       #if SILVERLIGHT
       IAsyncResult Begin_ResetLevel(AsyncCallback callback, object state, List<List<List<List<short>>>> field);
       void End_ResetLevel(IAsyncResult asyncResult);
+      #endif
+      #if SILVERLIGHT
+      IAsyncResult Begin_UpdateObject(AsyncCallback callback, object state, short objectId, string key, @Value @value);
+      void End_UpdateObject(IAsyncResult asyncResult);
       #endif
       #if SILVERLIGHT
       IAsyncResult Begin_Spawn(AsyncCallback callback, object state, short objId, sbyte symbol, short positionX, short positionY);
@@ -753,6 +758,67 @@ namespace RendererService
 
       
       #if SILVERLIGHT
+      public IAsyncResult Begin_UpdateObject(AsyncCallback callback, object state, short objectId, string key, @Value @value)
+      {
+        return send_UpdateObject(callback, state, objectId, key, @value);
+      }
+
+      public void End_UpdateObject(IAsyncResult asyncResult)
+      {
+        oprot_.Transport.EndFlush(asyncResult);
+        recv_UpdateObject();
+      }
+
+      #endif
+
+      public void UpdateObject(short objectId, string key, @Value @value)
+      {
+        #if !SILVERLIGHT
+        send_UpdateObject(objectId, key, @value);
+        recv_UpdateObject();
+
+        #else
+        var asyncResult = Begin_UpdateObject(null, null, objectId, key, @value);
+        End_UpdateObject(asyncResult);
+
+        #endif
+      }
+      #if SILVERLIGHT
+      public IAsyncResult send_UpdateObject(AsyncCallback callback, object state, short objectId, string key, @Value @value)
+      #else
+      public void send_UpdateObject(short objectId, string key, @Value @value)
+      #endif
+      {
+        oprot_.WriteMessageBegin(new TMessage("UpdateObject", TMessageType.Call, seqid_));
+        UpdateObject_args args = new UpdateObject_args();
+        args.ObjectId = objectId;
+        args.Key = key;
+        args.Value = @value;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        #if SILVERLIGHT
+        return oprot_.Transport.BeginFlush(callback, state);
+        #else
+        oprot_.Transport.Flush();
+        #endif
+      }
+
+      public void recv_UpdateObject()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        UpdateObject_result result = new UpdateObject_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        return;
+      }
+
+      
+      #if SILVERLIGHT
       public IAsyncResult Begin_Spawn(AsyncCallback callback, object state, short objId, sbyte symbol, short positionX, short positionY)
       {
         return send_Spawn(callback, state, objId, symbol, positionX, positionY);
@@ -1196,6 +1262,7 @@ namespace RendererService
         processMap_["GetPreferedFieldSize"] = GetPreferedFieldSize_Process;
         processMap_["LoadLevel"] = LoadLevel_Process;
         processMap_["ResetLevel"] = ResetLevel_Process;
+        processMap_["UpdateObject"] = UpdateObject_Process;
         processMap_["Spawn"] = Spawn_Process;
         processMap_["Remove"] = Remove_Process;
         processMap_["Collect"] = Collect_Process;
@@ -1509,6 +1576,34 @@ namespace RendererService
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
           oprot.WriteMessageBegin(new TMessage("ResetLevel", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void UpdateObject_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        UpdateObject_args args = new UpdateObject_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        UpdateObject_result result = new UpdateObject_result();
+        try
+        {
+          iface_.UpdateObject(args.ObjectId, args.Key, args.Value);
+          oprot.WriteMessageBegin(new TMessage("UpdateObject", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("UpdateObject", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -3287,6 +3382,249 @@ namespace RendererService
 
       public override string ToString() {
         StringBuilder __sb = new StringBuilder("ResetLevel_result(");
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class UpdateObject_args : TBase
+    {
+      private short _objectId;
+      private string _key;
+      private @Value _value;
+
+      public short ObjectId
+      {
+        get
+        {
+          return _objectId;
+        }
+        set
+        {
+          __isset.objectId = true;
+          this._objectId = value;
+        }
+      }
+
+      public string Key
+      {
+        get
+        {
+          return _key;
+        }
+        set
+        {
+          __isset.key = true;
+          this._key = value;
+        }
+      }
+
+      public @Value Value
+      {
+        get
+        {
+          return _value;
+        }
+        set
+        {
+          __isset.@value = true;
+          this._value = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool objectId;
+        public bool key;
+        public bool @value;
+      }
+
+      public UpdateObject_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.I16) {
+                  ObjectId = iprot.ReadI16();
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 2:
+                if (field.Type == TType.String) {
+                  Key = iprot.ReadString();
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 3:
+                if (field.Type == TType.Struct) {
+                  Value = @Value.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("UpdateObject_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (__isset.objectId) {
+            field.Name = "objectId";
+            field.Type = TType.I16;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            oprot.WriteI16(ObjectId);
+            oprot.WriteFieldEnd();
+          }
+          if (Key != null && __isset.key) {
+            field.Name = "key";
+            field.Type = TType.String;
+            field.ID = 2;
+            oprot.WriteFieldBegin(field);
+            oprot.WriteString(Key);
+            oprot.WriteFieldEnd();
+          }
+          if (Value != null && __isset.@value) {
+            field.Name = "value";
+            field.Type = TType.Struct;
+            field.ID = 3;
+            oprot.WriteFieldBegin(field);
+            Value.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("UpdateObject_args(");
+        bool __first = true;
+        if (__isset.objectId) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("ObjectId: ");
+          __sb.Append(ObjectId);
+        }
+        if (Key != null && __isset.key) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Key: ");
+          __sb.Append(Key);
+        }
+        if (Value != null && __isset.@value) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Value: ");
+          __sb.Append(Value== null ? "<null>" : Value.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class UpdateObject_result : TBase
+    {
+
+      public UpdateObject_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("UpdateObject_result");
+          oprot.WriteStructBegin(struc);
+
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("UpdateObject_result(");
         __sb.Append(")");
         return __sb.ToString();
       }

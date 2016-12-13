@@ -94,6 +94,13 @@ public class Field : Singleton<Field> {
             case '.':
                 prefab = objects.pacDotPrefab;
                 break;
+            case 'e':
+            case 'E':
+                prefab = objects.exitPrefab;
+                break;
+            case 'k':
+                prefab = objects.keyPrefab;
+                break;
         }
 
         if (prefab != null) {

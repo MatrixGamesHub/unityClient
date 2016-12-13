@@ -41,6 +41,10 @@ public class RendererHandler : Actor, RendererService.RendererService.Iface {
         AddAct(new ResetLevelAct(field));
     }
 
+    public void UpdateObject(short objId, string key, RendererService.Value value) {
+        AddAct(new UpdateObjectAct(objId, key, value));
+    }
+
     public void Spawn(short objId, sbyte symbol, short positionX, short positionY) {
         AddAct(new SpawnAct(objId, symbol, positionX, positionY));
     }
